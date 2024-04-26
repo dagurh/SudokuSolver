@@ -2,10 +2,12 @@ import numpy as np
 
 possibilities = [[list(range(1, 10)) for _ in range(9)] for _ in range(9)]
 
-
 def solving_algorithm(array):
 
   changed = False
+
+  def mod3(number):
+    return (number - 1) - ((number - 1) % 3)
 
   for i in range(9):
     for j in range(9):
@@ -17,12 +19,12 @@ def solving_algorithm(array):
             possibilities[i][j].remove(array[n][j])
           if array[i][n] in possibilities[i][j]:
             possibilities[i][j].remove(array[i][n])
-
-  def mod3(number):
-    a = (number%3)*3
-    print(a)
-  for i in range(9):
-    print(mod3(i))
+        ii = mod3(i+1)
+        jj = mod3(j+1)
+        for x in range(3):
+          for y in range(3):
+            if (array[ii+x][jj+y] != 0) and (array[ii+x][jj+y] in possibilities[i][j]):
+             possibilities[i][j].remove(array[ii+x][jj+y])    
 
   for i in range(9):
     for j in range(9):
@@ -30,11 +32,15 @@ def solving_algorithm(array):
         array[i][j] = possibilities[i][j][0]
         changed = True
 
-  
+  def assert_possibilities_empty(possibilities):
+    for sublist in possibilities:
+      for item in sublist:
+        if item:
+          return False
+    return True
 
   if not changed:
-    print(possibilities)
-    return array
+    return assert_possibilities_empty(possibilities)
 
   return solving_algorithm(array)
 
@@ -72,7 +78,7 @@ def main():
 
   print(str(a) + " out of 81 correct")
 
-  if testArray.all == targetArray.all:
+  if np.array_equal(testArray, targetArray):
     print("Solved successfully")
   else:
     print("Failed")
