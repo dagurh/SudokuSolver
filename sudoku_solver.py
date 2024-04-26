@@ -3,7 +3,6 @@ import numpy as np
 possibilities = [[list(range(1, 10)) for _ in range(9)] for _ in range(9)]
 
 
-
 def solving_algorithm(array):
 
   changed = False
@@ -19,11 +18,19 @@ def solving_algorithm(array):
           if array[i][n] in possibilities[i][j]:
             possibilities[i][j].remove(array[i][n])
 
+  def mod3(number):
+    a = (number%3)*3
+    print(a)
+  for i in range(9):
+    print(mod3(i))
+
   for i in range(9):
     for j in range(9):
       if len(possibilities[i][j]) == 1:
         array[i][j] = possibilities[i][j][0]
         changed = True
+
+  
 
   if not changed:
     print(possibilities)
